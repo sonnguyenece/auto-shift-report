@@ -46,10 +46,7 @@ def get_job_content_automatic():
           break
 
   if target_column_index is None:
-    return (
-        f"🚨 Đội Điện - Báo cáo ca trực\n📅 Ngày: {current_day}/{current_month}"
-        f"/{today.year}\n⚠️ Không tìm thấy cột ngày trong file lịch!"
-    )
+    return "Đội điện\nTrưởng ca: Không tìm thấy cột ngày trong file lịch!"
 
   # Tìm tên Trưởng ca (Cột 10 & 11)
   name_col_idx, shift_leader_col, start_row = 10, 11, 8
@@ -76,14 +73,14 @@ def get_job_content_automatic():
 
   leader_str = ", ".join(duty_persons) if duty_persons else "Không tìm thấy"
 
-  # 2. Đọc file công việc ca đêm
+  # 2. Đọc file công việc ca đêm (Cột B là ngày, Cột C là nội dung, bắt đầu từ dòng 3)
   night_tasks = []
   try:
     wb_task = openpyxl.load_workbook(task_file_path, data_only=True)
     sheet_task = wb_task.active
     for r in range(3, sheet_task.max_row + 1):
-      cell_day_val = sheet_task.cell(row=r, column=1).value
-      cell_task_val = sheet_task.cell(row=r, column=2).value
+      cell_day_val = sheet_task.cell(row=r, column=2).value  # Cột B: Ngày
+      cell_task_val = sheet_task.cell(row=r, column=3).value  # Cột C: Nội dung
       if cell_day_val is not None:
         try:
           if int(float(cell_day_val)) == current_day:
@@ -95,13 +92,15 @@ def get_job_content_automatic():
     print(f"Lỗi đọc file task: {e}")
 
   if not night_tasks:
-    night_tasks = ["Không thấy lịch làm việc"]
+    night_tasks = ["Vệ sinh trạm điện định kỳ theo kế hoạch"]
 
-  # Ghép nội dung
+  # Ghép nội dung theo form mới rút gọn
   result_lines = [
       "Đội điện",
       f"Trưởng ca: {leader_str}",
-      "",]
+      "",
+      "Nội dung công việc ca đêm:",
+  ]
   result_lines.extend([f"• {task}" for task in night_tasks])
 
   return "\n".join(result_lines)
@@ -112,12 +111,10 @@ def send_telegram(message):
   chat_id = os.getenv("TELEGRAM_CHAT_ID")
   url = f"https://api.telegram.org/bot{token}/sendMessage"
 
-  # Chuyển đổi định dạng cho Telegram hiển thị đẹp
   md_message = (
-      message.replace("⚡ BÁO CÁO", "⚡ *BÁO CÁO*")
-      .replace("📅 Ngày:", "📅 Ngày:*")
-      .replace("👷 Trưởng ca", "*👷 Trưởng ca*")
-      .replace("📋 Nội dung", "📋 *Nội dung*")
+      message.replace("Đội điện", "*Đội điện*")
+      .replace("Trưởng ca:", "*Trưởng ca:*")
+      .replace("Nội dung công việc", "*Nội dung công việc*")
   )
 
   payload = {"chat_id": chat_id, "text": md_message, "parse_mode": "Markdown"}
