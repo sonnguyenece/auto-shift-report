@@ -111,7 +111,7 @@ def get_job_content_automatic():
       "Đội điện",
       f"Trưởng ca: {leader_str}",
   ]
-  result_lines.extend([f"• {task}" for task in night_tasks])
+  result_lines.extend([f"- {task}" for task in night_tasks])
 
   return "\n".join(result_lines)
 
