@@ -99,11 +99,10 @@ def get_job_content_automatic():
 
   # Ghép nội dung
   result_lines = [
-      "⚡ BÁO CÁO CA TRỰC & CA ĐÊM ⚡",
-      f"📅 Ngày: {current_day}/{current_month}/{today.year}",
-      f"👷 Trưởng ca (N1): {leader_str}",
+      "Đội điện",
+      f"Trưởng ca: {leader_str}",
       "",
-      "📋 Nội dung công việc ca đêm:",
+      "Nội dung công việc ca đêm:",
   ]
   result_lines.extend([f"• {task}" for task in night_tasks])
 
