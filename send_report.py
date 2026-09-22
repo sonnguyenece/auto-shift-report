@@ -95,15 +95,13 @@ def get_job_content_automatic():
     print(f"Lỗi đọc file task: {e}")
 
   if not night_tasks:
-    night_tasks = ["Vệ sinh trạm điện định kỳ theo kế hoạch"]
+    night_tasks = ["Không thấy lịch làm việc"]
 
   # Ghép nội dung
   result_lines = [
       "Đội điện",
       f"Trưởng ca: {leader_str}",
-      "",
-      "Nội dung công việc ca đêm:",
-  ]
+      "",]
   result_lines.extend([f"• {task}" for task in night_tasks])
 
   return "\n".join(result_lines)
