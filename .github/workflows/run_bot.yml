@@ -2,17 +2,15 @@ name: Send Daily Shift Report
 
 on:
   schedule:
-    # Chạy lúc 16:00 giờ Việt Nam hằng ngày (09:00 UTC)
     - cron: '0 9 * * *'
-  workflow_dispatch: # Cho phép bấm nút "Run workflow" thủ công trên web để test
+  workflow_dispatch:
 
 permissions:
-  contents: write # Cho phép script tự động commit và lưu file lịch sử vào repo
+  contents: write
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
