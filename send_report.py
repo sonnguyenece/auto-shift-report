@@ -94,12 +94,10 @@ def get_job_content_automatic():
   if not night_tasks:
     night_tasks = ["Vệ sinh trạm điện định kỳ theo kế hoạch"]
 
-  # Ghép nội dung theo form mới rút gọn
+  # Form rút gọn đúng chuẩn yêu cầu của bạn
   result_lines = [
       "Đội điện",
       f"Trưởng ca: {leader_str}",
-      "",
-      "Nội dung công việc ca đêm:",
   ]
   result_lines.extend([f"• {task}" for task in night_tasks])
 
@@ -111,10 +109,8 @@ def send_telegram(message):
   chat_id = os.getenv("TELEGRAM_CHAT_ID")
   url = f"https://api.telegram.org/bot{token}/sendMessage"
 
-  md_message = (
-      message.replace("Đội điện", "*Đội điện*")
-      .replace("Trưởng ca:", "*Trưởng ca:*")
-      .replace("Nội dung công việc", "*Nội dung công việc*")
+  md_message = message.replace("Đội điện", "*Đội điện*").replace(
+      "Trưởng ca:", "*Trưởng ca:*"
   )
 
   payload = {"chat_id": chat_id, "text": md_message, "parse_mode": "Markdown"}
@@ -134,9 +130,7 @@ def send_email(message):
     print("Thiếu cấu hình Gmail, bỏ qua gửi mail.")
     return
 
-  subject = (
-      f"Báo cáo ca trực & ca đêm - {datetime.now().strftime('%d/%m/%Y')}"
-  )
+  subject = f"Báo cáo ca trực - {datetime.now().strftime('%d/%m/%Y')}"
 
   msg = email.mime.multipart.MIMEMultipart()
   msg["From"] = sender_email
