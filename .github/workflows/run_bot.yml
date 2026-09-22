@@ -1,0 +1,32 @@
+name: Auto Send Report (Telegram & Email)
+
+on:
+  schedule:
+    # Chạy lúc 16:00 giờ Việt Nam hằng ngày (09:00 UTC)
+    - cron: '0 9 * * *'
+  workflow_dispatch: # Cho phép bấm nút test thủ công bất cứ lúc nào
+
+jobs:
+  run-bot:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          pip install requests openpyxl
+
+      - name: Run script
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          GMAIL_USER: ${{ secrets.GMAIL_USER }}
+          GMAIL_APP_PASS: ${{ secrets.GMAIL_APP_PASS }}
+        run: |
+          python send_report.py
