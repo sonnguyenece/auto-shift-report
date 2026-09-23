@@ -2,8 +2,8 @@ name: Send Daily Shift Report
 
 on:
   schedule:
-    - cron: '40 9 * * *'  # Test chạy tự động lúc 16:40 giờ Việt Nam (09:40 UTC)
-  workflow_dispatch:      # Giữ lại nút bấm thủ công trên web để test khi cần
+    - cron: '15 9 * * *'  # Tự động chạy đúng lúc 16:15 giờ Việt Nam (09:15 UTC) mỗi ngày
+  workflow_dispatch:      # Giữ lại nút bấm thủ công trên web khi cần
 
 permissions:
   contents: write
