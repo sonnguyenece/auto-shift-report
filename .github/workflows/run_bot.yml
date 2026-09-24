@@ -1,9 +1,9 @@
-name: Send Daily Shift Report
+name: Auto Shift Report
 
 on:
   schedule:
-    - cron: '15 10 * * *'  # Chạy lúc 17:20 giờ Việt Nam hôm nay
-  workflow_dispatch:      # Giữ lại nút bấm thủ công trên web khi cần
+    - cron: '35 10 * * *'  # 16:15 giờ Việt Nam mỗi ngày
+  workflow_dispatch:      # Vẫn giữ nút bấm tay khi cần
 
 permissions:
   contents: write
@@ -34,4 +34,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_REPOSITORY: ${{ github.repository }}
         run: |
-          python send_report.py
+          python run_bot.py
